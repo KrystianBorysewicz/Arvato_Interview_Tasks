@@ -1,39 +1,27 @@
-﻿using Application;
+﻿using Application.Contracts;
 using Application.Infrastructure;
-using Infrastructure.ExternalAPIs.Fixer;
-using Infrastructure.Repositories;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
+using Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Net.Http;
-using System.Text.Json;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace ArvatoInterviewTasks
+namespace Application
 {
-    class Program
+    public class ExchangeFunctions : IExchangeFunctions
     {
-        static IServiceProvider _serviceProvider;
-        static async Task Main(string[] args)
+        public static IServiceProvider serviceProvider;
+        private readonly IExchangeClient _client;
+        public ExchangeFunctions(IExchangeClient client) 
         {
-            // Add scoped DB Connection
-            var services = new ServiceCollection();
-            services.AddScoped<IConnectionFactory, SqlServerConnectionFactory>(x =>
-                new SqlServerConnectionFactory(
-                    @"Database=LeechBA;Data Source=(LocalDb)\VitaCafe;Integrated Security=SSPI;"));
-
-            // Add scoped Exchange Client
-            services.AddScoped<IExchangeClient, FixerClient>(x =>
-                new FixerClient("ApiKey123?"));
-
-            _serviceProvider = services.BuildServiceProvider(true);
-
-            await ExchangeFunctions.RunConverter();
+            _client = client;
+        }
+        public async Task<CurrencyRate> ConvertCurrency(string symbol1, string symbol2, double amount, DateTime date = new DateTime())
+        {
 
         }
-
-        async void RunConverter()
+        public async Task RunConverter()
         {
             Console.Write("Input a date for the rates in the format DD-MM-YYYY or continue to use latest rates: ");
 
@@ -53,14 +41,20 @@ namespace ArvatoInterviewTasks
             Console.Write("Input Currency Code 1:");
             var Symbol1 = Console.ReadLine();
 
+            while (!rates.ContainsKey(Symbol1))
+            {
                 Console.WriteLine($"{Symbol1} is not a valid currency. Please try again: ");
                 Symbol1 = Console.ReadLine();
+            }
 
             Console.Write("Input Currency Code 2:");
             var Symbol2 = Console.ReadLine();
 
+            while (!rates.ContainsKey(Symbol2))
+            {
                 Console.WriteLine($"{Symbol2} is not a valid currency. Please try again: ");
                 Symbol2 = Console.ReadLine();
+            }
 
             Console.Write("Input Currency 1 Amount:");
 
@@ -71,5 +65,4 @@ namespace ArvatoInterviewTasks
             Console.WriteLine($"{amount} {Symbol1} = {rates[Symbol2] / rates[Symbol1] * amount} {Symbol2}");
         }
     }
-
 }
