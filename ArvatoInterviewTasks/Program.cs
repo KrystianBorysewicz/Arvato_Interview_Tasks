@@ -1,4 +1,5 @@
 ﻿using Application;
+using Application.Contracts;
 using Application.Infrastructure;
 using Infrastructure.ExternalAPIs.Fixer;
 using Infrastructure.Repositories;
@@ -25,15 +26,17 @@ namespace ArvatoInterviewTasks
 
             // Add scoped Exchange Client
             services.AddScoped<IExchangeClient, FixerClient>(x =>
-                new FixerClient("ApiKey123?"));
+                new FixerClient("e11276bb7f382b9bdd79ee91e8ee96f1"));
+
+            services.AddScoped<IExchangeFunctions, ExchangeFunctions>();
 
             _serviceProvider = services.BuildServiceProvider(true);
 
-            await ExchangeFunctions.RunConverter();
+            await RunConverter();
 
         }
 
-        async void RunConverter()
+        static async Task RunConverter()
         {
             Console.Write("Input a date for the rates in the format DD-MM-YYYY or continue to use latest rates: ");
 
@@ -48,27 +51,27 @@ namespace ArvatoInterviewTasks
                     dateString = Console.ReadLine();
                 }
             }
-            var rates = date == DateTime.MinValue ? await _client.GetRates() : await _client.GetRates(date);
 
             Console.Write("Input Currency Code 1:");
             var Symbol1 = Console.ReadLine();
 
-                Console.WriteLine($"{Symbol1} is not a valid currency. Please try again: ");
-                Symbol1 = Console.ReadLine();
-
             Console.Write("Input Currency Code 2:");
             var Symbol2 = Console.ReadLine();
-
-                Console.WriteLine($"{Symbol2} is not a valid currency. Please try again: ");
-                Symbol2 = Console.ReadLine();
 
             Console.Write("Input Currency 1 Amount:");
 
             // TODO: Needs proper validation of amount.
             var amount = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
 
-            // TOCHECK: Could use rounding?
-            Console.WriteLine($"{amount} {Symbol1} = {rates[Symbol2] / rates[Symbol1] * amount} {Symbol2}");
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var exchangeFunctions = scope.ServiceProvider.GetService<IExchangeFunctions>();
+                var convertedValue = string.IsNullOrWhiteSpace(dateString) ? await exchangeFunctions.ConvertCurrency(Symbol1, Symbol2, amount) : await exchangeFunctions.ConvertCurrency(Symbol1, Symbol2, amount, date);
+
+                // TOCHECK: Could use rounding?
+                Console.WriteLine($"{amount} {Symbol1} = {convertedValue} {Symbol2}");
+            }
+
         }
     }
 
