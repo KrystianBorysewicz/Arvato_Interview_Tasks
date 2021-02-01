@@ -6,6 +6,14 @@ namespace Domain.Models
 {
     public class CurrencyRate
     {
+        public CurrencyRate(string symbol, double value, string comparedSymbol, DateTime date)
+        {
+            Symbol = symbol;
+            Value = value;
+            ComparedSymbol = comparedSymbol;
+            Date = date;
+        }
+
         public string Symbol { get; set; }
 
         public double Value { get; set; }

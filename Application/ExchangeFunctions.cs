@@ -21,30 +21,32 @@ namespace Application
 
         public async Task<double> ConvertCurrency(string symbol1, string symbol2, double amount)
         {
-            var rates = await _client.GetRates(symbol2);
-            var currencyRate = rates.First(x => x.Symbol == symbol1);
-            var rate = amount * currencyRate.Value;
+            var rates = await _client.GetRates();
+            var symbol1Rate = rates.First(x => x.Symbol == symbol1);
+            var symbol2Rate = rates.First(x => x.Symbol == symbol2);
+            var rate = symbol2Rate.Value / symbol1Rate.Value * amount;
             return rate;
         }
 
         public async Task<double> ConvertCurrency(string symbol1, string symbol2, double amount, DateTime date)
         {
-            var rates = await _client.GetRates(symbol2, date);
-            var currencyRate = rates.First(x => x.Symbol == symbol1);
-            var rate = amount * currencyRate.Value;
+            var rates = await _client.GetRates(date);
+            var symbol1Rate = rates.First(x => x.Symbol == symbol1);
+            var symbol2Rate = rates.First(x => x.Symbol == symbol2);
+            var rate = symbol2Rate.Value / symbol1Rate.Value * amount;
             return rate;
         }
 
         public async Task<CurrencyRate> GetCurrencyRate(string symbol1, string symbol2, double amount)
         {
-            var rates = await _client.GetRates(symbol2);
+            var rates = await _client.GetRates();
             var currencyRate = rates.First(x => x.Symbol == symbol1);
             return currencyRate;
         }
 
         public async Task<CurrencyRate> GetCurrencyRate(string symbol1, string symbol2, double amount, DateTime date)
         {
-            var rates = await _client.GetRates(symbol2, date);
+            var rates = await _client.GetRates(date);
             var currencyRate = rates.First(x => x.Symbol == symbol1);
             return currencyRate;
         }

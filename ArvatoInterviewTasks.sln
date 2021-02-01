@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{3D0DF3CD-872D-4525-B21B-91F1F0557F42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduledSql", "ScheduledSql\ScheduledSql.csproj", "{A8D2DC31-4195-465E-84A8-A8EC4DB44F88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3D0DF3CD-872D-4525-B21B-91F1F0557F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D0DF3CD-872D-4525-B21B-91F1F0557F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D0DF3CD-872D-4525-B21B-91F1F0557F42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8D2DC31-4195-465E-84A8-A8EC4DB44F88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8D2DC31-4195-465E-84A8-A8EC4DB44F88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8D2DC31-4195-465E-84A8-A8EC4DB44F88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8D2DC31-4195-465E-84A8-A8EC4DB44F88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

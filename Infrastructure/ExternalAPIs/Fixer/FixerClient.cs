@@ -24,8 +24,13 @@ namespace Infrastructure.ExternalAPIs.Fixer
         /// <inheritdoc/>
         public async Task<IEnumerable<CurrencyRate>> GetRates()
         {
-            var rates = await CallAsync<List<CurrencyRate>>("rates", Endpoints.Latest, true);
+            var rates = new List<CurrencyRate>();
+            var messageRoot = await CallAsync<RatesResponseMessage>(Endpoints.Latest, true);
 
+            foreach(var x in messageRoot.rates)
+            {
+                rates.Add(new CurrencyRate(x.Key, x.Value, messageRoot.Base, messageRoot.date));
+            }
             return rates;
         }
 
@@ -33,7 +38,7 @@ namespace Infrastructure.ExternalAPIs.Fixer
         public async Task<IEnumerable<CurrencyRate>> GetRates(string baseCurrency, DateTime date)
         {
             var parameters = new Dictionary<string, object>() { { "base", baseCurrency } };
-            var rates = await CallAsync<List<CurrencyRate>>("rates", date.ToString("yyyy-mm-dd"), true, parameters);
+            var rates = await CallAsync<List<CurrencyRate>>("rates", date.ToString("yyyy-MM-dd"), true, parameters);
 
             return rates;
         }
@@ -41,8 +46,13 @@ namespace Infrastructure.ExternalAPIs.Fixer
         /// <inheritdoc/>
         public async Task<IEnumerable<CurrencyRate>> GetRates(DateTime date)
         {
-            var rates = await CallAsync<List<CurrencyRate>>("rates", date.ToString("yyyy-mm-dd"), true);
+            var rates = new List<CurrencyRate>();
+            var messageRoot = await CallAsync<RatesResponseMessage>(date.ToString("yyyy-MM-dd"), true);
 
+            foreach (var x in messageRoot.rates)
+            {
+                rates.Add(new CurrencyRate(x.Key, x.Value, messageRoot.Base, messageRoot.date));
+            }
             return rates;
         }
 
@@ -112,7 +122,7 @@ namespace Infrastructure.ExternalAPIs.Fixer
 
         string UrlBuilder(string endpoint, bool authorized, IDictionary<string, object> parameters = null)
         {
-            string url = $"{BaseURL}{endpoint}{(authorized ? $"?access_key={ApiKey}" : "")}{string.Join("", parameters.Select(x => $"&{x.Key}={x.Value}"))}";
+            string url = $"{BaseURL}{endpoint}{(authorized ? $"?access_key={ApiKey}" : "")}{(parameters == null ? "" : string.Join("", parameters.Select(x => $"&{x.Key}={x.Value}")))}";
             return url;
         }
     }

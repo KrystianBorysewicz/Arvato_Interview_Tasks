@@ -26,7 +26,7 @@ namespace ArvatoInterviewTasks
 
             // Add scoped Exchange Client
             services.AddScoped<IExchangeClient, FixerClient>(x =>
-                new FixerClient("e11276bb7f382b9bdd79ee91e8ee96f1"));
+                new FixerClient("Insert API key here (testing only)"));
 
             services.AddScoped<IExchangeFunctions, ExchangeFunctions>();
 
