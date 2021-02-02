@@ -15,7 +15,7 @@ namespace Infrastructure.ExternalAPIs.Fixer
         [JsonProperty("base")]
         public string Base { get; set; }
         public DateTime date { get; set; }
-        public Dictionary<string, double> rates { get; set; }
+        public Dictionary<string, decimal> rates { get; set; }
 
     }
 }

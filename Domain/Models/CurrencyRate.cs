@@ -6,7 +6,7 @@ namespace Domain.Models
 {
     public class CurrencyRate
     {
-        public CurrencyRate(string symbol, double value, string comparedSymbol, DateTime date)
+        public CurrencyRate(string symbol, decimal value, string comparedSymbol, DateTime date)
         {
             Symbol = symbol;
             Value = value;
@@ -16,7 +16,7 @@ namespace Domain.Models
 
         public string Symbol { get; set; }
 
-        public double Value { get; set; }
+        public decimal Value { get; set; }
 
         public string ComparedSymbol { get; set; }
 

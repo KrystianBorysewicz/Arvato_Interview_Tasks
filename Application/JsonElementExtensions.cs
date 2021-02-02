@@ -4,6 +4,12 @@
 
     internal static class JsonElementExtensions
     {
+        /// <summary>
+        /// Safely gets a property from a <see cref="JsonElement"/>.
+        /// </summary>
+        /// <param name="jsonElement"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
         public static JsonElement SafeGetProperty(this JsonElement jsonElement, string propertyName)
         {
             try

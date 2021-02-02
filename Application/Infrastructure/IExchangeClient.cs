@@ -14,16 +14,16 @@ namespace Application.Infrastructure
         /// Retrieves current currency rates.
         /// </summary>
         /// <returns>Current currency rates.</returns>
-        Task<IEnumerable<CurrencyRate>> GetRates(string baseCurrency);
+        Task<IEnumerable<CurrencyRate>> GetRatesAsync(string baseCurrency);
 
         /// <summary>
         /// Retrieves historical currency rates.
         /// </summary>
         /// <param name="date">The date from which the rates should be retrieved.</param>
         /// <returns>Historical currency rates.</returns>
-        Task<IEnumerable<CurrencyRate>> GetRates(string baseCurrency, DateTime date);
+        Task<IEnumerable<CurrencyRate>> GetRatesAsync(string baseCurrency, DateTime date);
 
-        Task<IEnumerable<CurrencyRate>> GetRates(DateTime date);
+        Task<IEnumerable<CurrencyRate>> GetRatesAsync(DateTime date);
 
         
 

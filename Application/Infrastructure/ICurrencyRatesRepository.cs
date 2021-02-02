@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Infrastructure
 {
+    /// <summary>
+    /// Respository for <see cref="CurrencyRate"/>.
+    /// </summary>
     public interface ICurrencyRatesRepository 
     {
         Task<CurrencyRate> AddCurrencyRates(CurrencyRate currencyRate, CancellationToken cancellationToken = default);

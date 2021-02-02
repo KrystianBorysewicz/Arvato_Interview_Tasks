@@ -8,9 +8,9 @@ namespace Application.Contracts
 {
     public interface IExchangeFunctions
     {
-        Task<double> ConvertCurrency(string symbol1, string symbol2, double amount);
-        Task<double> ConvertCurrency(string symbol1, string symbol2, double amount, DateTime date);
-        Task<CurrencyRate> GetCurrencyRate(string symbol1, string symbol2, double amount);
-        Task<CurrencyRate> GetCurrencyRate(string symbol1, string symbol2, double amount, DateTime date);
+        Task<decimal> ConvertCurrencyAsync(string initialSymbol, string convertToSymbol, decimal amount);
+        Task<decimal> ConvertCurrencyAsync(string initialSymbol, string convertToSymbol, decimal amount, DateTime date);
+        Task<CurrencyRate> GetCurrencyRateAsync(string symbol1, string convertToSymbol, decimal amount);
+        Task<CurrencyRate> GetCurrencyRateAsync(string symbol1, string convertToSymbol, decimal amount, DateTime date);
     }
 }

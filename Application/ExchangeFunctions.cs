@@ -19,80 +19,40 @@ namespace Application
             _client = client;
         }
 
-        public async Task<double> ConvertCurrency(string symbol1, string symbol2, double amount)
+        public async Task<decimal> ConvertCurrencyAsync(string initialSymbol, string convertToSymbol, decimal amount)
         {
-            var rates = await _client.GetRates();
-            var symbol1Rate = rates.First(x => x.Symbol == symbol1);
-            var symbol2Rate = rates.First(x => x.Symbol == symbol2);
-            var rate = symbol2Rate.Value / symbol1Rate.Value * amount;
-            return rate;
+            return await ConvertCurrencyInternalAsync(initialSymbol, convertToSymbol, amount, null);
         }
 
-        public async Task<double> ConvertCurrency(string symbol1, string symbol2, double amount, DateTime date)
+        public async Task<decimal> ConvertCurrencyAsync(string initialSymbol, string convertToSymbol, decimal amount, DateTime date)
         {
-            var rates = await _client.GetRates(date);
-            var symbol1Rate = rates.First(x => x.Symbol == symbol1);
-            var symbol2Rate = rates.First(x => x.Symbol == symbol2);
-            var rate = symbol2Rate.Value / symbol1Rate.Value * amount;
-            return rate;
+            return await ConvertCurrencyInternalAsync(initialSymbol, convertToSymbol, amount, date);
         }
 
-        public async Task<CurrencyRate> GetCurrencyRate(string symbol1, string symbol2, double amount)
+        async Task<decimal> ConvertCurrencyInternalAsync(string initialSymbol, string convertToSymbol, decimal amount, DateTime? date)
+        {
+            var rates = date.HasValue
+                ? await _client.GetRatesAsync(date.Value)
+                : await _client.GetRates();
+
+            var initialSymbolRate = rates.FirstOrDefault(rate => rate.Symbol == initialSymbol);
+            var convertToSymbolRate = rates.FirstOrDefault(rate => rate.Symbol == convertToSymbol);
+            var convertedValue = convertToSymbolRate.Value / initialSymbolRate.Value * amount;
+            return convertedValue;
+        }
+
+        public async Task<CurrencyRate> GetCurrencyRateAsync(string symbol1, string symbol2, decimal amount)
         {
             var rates = await _client.GetRates();
             var currencyRate = rates.First(x => x.Symbol == symbol1);
             return currencyRate;
         }
 
-        public async Task<CurrencyRate> GetCurrencyRate(string symbol1, string symbol2, double amount, DateTime date)
+        public async Task<CurrencyRate> GetCurrencyRateAsync(string symbol1, string symbol2, decimal amount, DateTime date)
         {
-            var rates = await _client.GetRates(date);
+            var rates = await _client.GetRatesAsync(date);
             var currencyRate = rates.First(x => x.Symbol == symbol1);
             return currencyRate;
         }
-
-        //public async Task RunConverter()
-        //{
-        //    Console.Write("Input a date for the rates in the format DD-MM-YYYY or continue to use latest rates: ");
-
-        //    var dateString = Console.ReadLine();
-        //    var date = new DateTime();
-        //    if (!string.IsNullOrWhiteSpace(dateString))
-        //    {
-        //        while (!DateTime.TryParseExact(dateString, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
-        //        {
-
-        //            Console.WriteLine("Your date was incorrect, please try again: ");
-        //            dateString = Console.ReadLine();
-        //        }
-        //    }
-        //    var rates = date == DateTime.MinValue ? await _client.GetRates() : await _client.GetRates(date);
-
-        //    Console.Write("Input Currency Code 1:");
-        //    var Symbol1 = Console.ReadLine();
-
-        //    while (!rates.ContainsKey(Symbol1))
-        //    {
-        //        Console.WriteLine($"{Symbol1} is not a valid currency. Please try again: ");
-        //        Symbol1 = Console.ReadLine();
-        //    }
-
-        //    Console.Write("Input Currency Code 2:");
-        //    var Symbol2 = Console.ReadLine();
-
-        //    while (!rates.ContainsKey(Symbol2))
-        //    {
-        //        Console.WriteLine($"{Symbol2} is not a valid currency. Please try again: ");
-        //        Symbol2 = Console.ReadLine();
-        //    }
-
-        //    Console.Write("Input Currency 1 Amount:");
-
-        //    // TODO: Needs proper validation of amount.
-        //    var amount = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
-
-        //    // TOCHECK: Could use rounding?
-        //    Console.WriteLine($"{amount} {Symbol1} = {rates[Symbol2] / rates[Symbol1] * amount} {Symbol2}");
-        //}
     }
 }

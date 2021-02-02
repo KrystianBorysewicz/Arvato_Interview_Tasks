@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Contracts
 {
-    interface ICurrencyRatesService
+    public interface ICurrencyRatesService
     {
         /// <summary>
         /// Stores a single <see cref="CurrencyRate"/>.
@@ -21,5 +21,12 @@ namespace Application.Contracts
         /// <param name="currencyRate"></param>
         /// <returns>The stored <see cref="CurrencyRate"/>s.</returns>
         Task<IEnumerable<CurrencyRate>> StoreCurrencyRates(IEnumerable<CurrencyRate> currencyRate);
+
+        /// <summary>
+        /// Retreives and stores current <see cref="CurrencyRate"/>s.
+        /// </summary>
+        /// <param name="currencyRate"></param>
+        /// <returns>The stored <see cref="CurrencyRate"/>s.</returns>
+        Task<IEnumerable<CurrencyRate>> StoreCurrencyRates();
     }
 }
