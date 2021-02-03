@@ -29,7 +29,7 @@ namespace Infrastructure.Repositories
         {
             using IDbConnection conn = _connectionFactory.CreateConnection();
             conn.Open();
-            string query = "INSERT INTO Currency_Rates (symbol, value, compared_symbol, date) VALUES (@Symbol, @Value, @ComparedSymbol, @Date)";
+            string query = "INSERT INTO currency_rates (symbol, value, compared_symbol, date) VALUES (@Symbol, @Value, @ComparedSymbol, @Date)";
             await conn.ExecuteAsync(query, currencyRate);
             return currencyRate;
         }
@@ -44,7 +44,7 @@ namespace Infrastructure.Repositories
         {
             using IDbConnection conn = _connectionFactory.CreateConnection();
             conn.Open();
-            string query = "INSERT INTO Currency_Rates (symbol, value, compared_symbol, date) VALUES (@Symbol, @Value, @ComparedSymbol, @Date)";
+            string query = "INSERT INTO currency_rates (symbol, value, compared_symbol, date) VALUES (@Symbol, @Value, @ComparedSymbol, @Date)";
             await conn.ExecuteAsync(query, currencyRates);
             return currencyRates;
         }
